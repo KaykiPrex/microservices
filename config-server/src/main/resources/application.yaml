@@ -5,7 +5,7 @@ spring:
     config:
       server:
         git:
-          default-label: eureka-server #branch name
+          default-label: gateway #branch name
           uri: https://github.com/KaykiPrex/microservices
           search-paths: config-data
   application:
