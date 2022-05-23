@@ -18,10 +18,10 @@ eureka:
             enabled: true
         routes:
         - id: user-service
-            uri: lb://user-service
-            predicates:
-              - Path=/users/** # ** Accede a todas las rutas internas
+          uri: lb://user-service
+          predicates:
+          - Path=/users/** # **  Accede a todas las rutas internas
         - id: car-service
-            uri: lb://car-service
-            predicates:
-              - Path=/cars/**
+          uri: lb://car-service
+          predicates:
+          - Path=/cars/**
