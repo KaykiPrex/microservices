@@ -17,11 +17,11 @@ eureka:
           locator:
             enabled: true
         routes:
-          - id: user-service
+        - id: user-service
             uri: lb://user-service
             predicates:
               - Path=/users/** # ** Accede a todas las rutas internas
-          - id: car-service
+        - id: car-service
             uri: lb://car-service
             predicates:
               - Path=/cars/**
