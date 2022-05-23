@@ -3,12 +3,14 @@ package com.microservices.userservice.application.service;
 import com.microservices.userservice.application.service.abstraction.ICrudUserService;
 import com.microservices.userservice.application.service.abstraction.IFeingCarService;
 import com.microservices.userservice.feign.CarFeignClient;
+import com.microservices.userservice.feign.model.CarListModel;
 import com.microservices.userservice.feign.model.CarModel;
 import com.microservices.userservice.infrastructure.database.entity.UserEntity;
 import com.microservices.userservice.infrastructure.database.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -22,6 +24,9 @@ public class UserService implements ICrudUserService, IFeingCarService {
 
     @Autowired
     CarFeignClient carFeignClient;
+
+    @Autowired
+    RestTemplate restTemplate;
 
     @Override
     public UserEntity save(UserEntity user) {
@@ -38,11 +43,21 @@ public class UserService implements ICrudUserService, IFeingCarService {
         return userRepository.findAll();
     }
 
+
+
     @Override
-    public CarModel saveCar(long id, CarModel carModel){
-        log.info("ID > "+id);
-        carModel.setUserId(id);
+    public CarModel saveCar(long userid, CarModel carModel){
+        log.info("ID > "+userid);
+        carModel.setUserId(userid);
         return carFeignClient.save(carModel);
+    }
+
+    @Override
+    public List<CarModel> getListCar(long userid) {
+        log.info("CAR-SERVICE> "+userid);
+        List<CarModel> carsList = restTemplate.getForObject("http://car-service/cars/users/{id}",List.class,userid);
+        log.info("REST TEMPLATE> ");
+        return carsList;
     }
 
     public Map<String, Object> getUserAndCar(long userId) {

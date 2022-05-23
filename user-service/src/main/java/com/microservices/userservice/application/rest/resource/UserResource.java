@@ -44,6 +44,13 @@ public class UserResource {
         return ResponseEntity.ok(userNew);
     }
 
+    @GetMapping("cars/{userid}")
+    public ResponseEntity<List<CarModel>> getListCars(@PathVariable("userid") long userid) {
+        List<CarModel> cars = feingCarService.getListCar(userid);
+        if(cars.isEmpty()) return ResponseEntity.noContent().build();
+        return ResponseEntity.ok(cars);
+    }
+
     @PostMapping("cars/{userid}")
     public ResponseEntity<CarModel> saveCar(@PathVariable("userid") long userid, @RequestBody CarModel carModel){
         CarModel car = feingCarService.saveCar(userid,carModel);
