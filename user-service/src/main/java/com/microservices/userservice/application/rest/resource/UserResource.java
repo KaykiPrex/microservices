@@ -5,7 +5,9 @@ import com.microservices.userservice.application.service.abstraction.ICrudUserSe
 import com.microservices.userservice.application.service.abstraction.IFeingCarService;
 import com.microservices.userservice.feign.model.CarModel;
 import com.microservices.userservice.infrastructure.database.entity.UserEntity;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -44,6 +46,7 @@ public class UserResource {
         return ResponseEntity.ok(userNew);
     }
 
+    @CircuitBreaker(name = "carsCBrk", fallbackMethod = "fallBackGetListCars")
     @GetMapping("cars/{userid}")
     public ResponseEntity<List<CarModel>> getListCars(@PathVariable("userid") long userid) {
         List<CarModel> cars = feingCarService.getListCar(userid);
@@ -63,5 +66,8 @@ public class UserResource {
         return ResponseEntity.ok(result);
     }
 
+    public ResponseEntity<List<CarModel>> fallBackGetListCars(@PathVariable("userid") long userid, RuntimeException e) {
+        return new ResponseEntity("Exception : Error al hacer la peticion a car-service", HttpStatus.OK);
+    }
 
 }
