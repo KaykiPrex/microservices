@@ -1,5 +1,5 @@
 server:
-  port: 8092
+  port: 8090
 
 eureka:
   client:
@@ -10,19 +10,19 @@ eureka:
   instance:
     hostname: localhost
 
-  spring:
-    cloud:
-      gateway:
-        discovery:
-          locator:
-            enabled: true
-            lowerCaseServiceId: true
-        routes:
-        - id: user-service
-          uri: lb://USER-SERVICE
-          predicates:
-            - Path=/users/**
-        - id: car-service
-          uri: lb://CAR-SERVICE/cars
-          predicates:
-            - Path=/cars/**
+spring:
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+          lowerCaseServiceId: true
+      routes:
+      - id: user-service
+        uri: lb://USER-SERVICE
+        predicates:
+          - Path=/users/**
+      - id: car-service
+        uri: lb://CAR-SERVICE/cars
+        predicates:
+          - Path=/cars/**
