@@ -1,5 +1,6 @@
 server:
-  port: 8080
+  port: 8090
+
 eureka:
   client:
     fetch-registry: true
@@ -9,18 +10,19 @@ eureka:
   instance:
     hostname: localhost
 
-  spring:
-    cloud:
-      gateway:
-        discovery:
-          locator:
-            enabled: true
-        routes:
-          - id: user-service
-            uri: lb://user-service
-            predicates:
-              - Path=/users/** # ** Accede a todas las rutas internas
-          - id: car-service
-            uri: lb://car-service
-            predicates:
-              - Path=/cars/**
+spring:
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+          lowerCaseServiceId: true
+      routes:
+      - id: user-service #Nombre de la app
+        uri: lb://USER-SERVICE #Nombre del servicio en eureka
+        predicates:
+          - Path=/users/** #Path del endpoint a partir de cual se va a enrutar
+      - id: car-service
+        uri: lb://CAR-SERVICE/cars #Esta uri funciona igual como la de USER-SERVICE pero tambien se puede agregar el endpoint(ej: /cars) o sacarlo
+        predicates:
+          - Path=/cars/**
