@@ -5,6 +5,7 @@ import com.microservices.userservice.application.service.abstraction.ICrudUserSe
 import com.microservices.userservice.application.service.abstraction.IFeingCarService;
 import com.microservices.userservice.feign.model.CarModel;
 import com.microservices.userservice.infrastructure.database.entity.UserEntity;
+import io.github.resilience4j.circuitbreaker.CallNotPermittedException;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -67,7 +68,7 @@ public class UserResource {
     }
 
     public ResponseEntity<List<CarModel>> fallBackGetListCars(@PathVariable("userid") long userid, RuntimeException e) {
-        return new ResponseEntity("Exception : Error al hacer la peticion a car-service", HttpStatus.OK);
+        return new ResponseEntity("Message: No servers available for service: car-service", HttpStatus.OK);
     }
 
 }
