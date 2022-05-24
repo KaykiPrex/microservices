@@ -18,11 +18,11 @@ spring:
           enabled: true
           lowerCaseServiceId: true
       routes:
-      - id: user-service
-        uri: lb://USER-SERVICE
+      - id: user-service #Nombre de la app
+        uri: lb://USER-SERVICE #Nombre del servicio en eureka
         predicates:
-          - Path=/users/**
+          - Path=/users/** #Path del endpoint a partir de cual se va a enrutar
       - id: car-service
-        uri: lb://CAR-SERVICE/cars
+        uri: lb://CAR-SERVICE/cars #Esta uri funciona igual como la de USER-SERVICE pero tambien se puede agregar el endpoint(ej: /cars) o sacarlo
         predicates:
           - Path=/cars/**
