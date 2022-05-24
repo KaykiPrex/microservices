@@ -21,8 +21,8 @@ eureka:
         - id: user-service
           uri: lb://USER-SERVICE
           predicates:
-            - Path=/users/** # **  Accede a todas las rutas internas
-        - id: cars
-          uri: lb://CAR-SERVICE
+            - Path=/users/**
+        - id: car-service
+          uri: lb://CAR-SERVICE/cars
           predicates:
             - Path=/cars/**
