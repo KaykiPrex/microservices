@@ -3,7 +3,6 @@ package com.microservices.userservice.application.service;
 import com.microservices.userservice.application.service.abstraction.ICrudUserService;
 import com.microservices.userservice.application.service.abstraction.IFeingCarService;
 import com.microservices.userservice.feign.CarFeignClient;
-import com.microservices.userservice.feign.model.CarListModel;
 import com.microservices.userservice.feign.model.CarModel;
 import com.microservices.userservice.infrastructure.database.entity.UserEntity;
 import com.microservices.userservice.infrastructure.database.repository.UserRepository;
@@ -15,6 +14,7 @@ import org.springframework.web.client.RestTemplate;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Service
 @Slf4j
@@ -48,6 +48,8 @@ public class UserService implements ICrudUserService, IFeingCarService {
     @Override
     public CarModel saveCar(long userid, CarModel carModel){
         log.info("ID > "+userid);
+        Optional<UserEntity> user = userRepository.findById(userid);
+        if(user.isEmpty()) return null ;
         carModel.setUserId(userid);
         return carFeignClient.save(carModel);
     }
